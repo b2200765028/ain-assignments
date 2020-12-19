@@ -15,7 +15,7 @@ except IOError:
 
 try:
    if sys.argv[1] != "operands.txt":
-      raise IOError1
+      raise IOError
    operandsfile = open(sys.argv[1],"r")
 except IOError:
    print("IOError: cannot open {}\n\n- Game Over -".format(sys.argv[1]))
