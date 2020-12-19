@@ -1,0 +1,44 @@
+key_matrix = 2
+keymatrixlist = [[1,2],[1,3]]
+numberlist = [41,23,15,16]
+
+
+
+def inverse(keymatrixlist):
+    global key_matrix 
+    if key_matrix==2:
+        a , d , b , c = keymatrixlist[0][0],keymatrixlist[1][1],keymatrixlist[0][1],keymatrixlist[1][0]
+        keymatrixlist[0][0] = d
+        keymatrixlist[1][1] = a
+        keymatrixlist[0][1] = -b
+        keymatrixlist[1][0] = -c
+    return keymatrixlist
+
+def decode(numberlist):
+    targetlist,result = [],[]
+    inverse(keymatrixlist)
+    j = 0
+    y = []
+    for i in range(len(numberlist)):
+        j +=1
+        y.append([numberlist[i]])
+        if j%key_matrix ==0:
+            targetlist.append(y)
+            y = []
+    for z in range(len(targetlist)):
+      matrix2 = targetlist[z]
+      for i in range(len(matrix2)):
+        matrix3 = matrix2[i]
+        result1 = []
+        for j in range(len(matrix2)):
+            result1.append([0])
+
+        for u in range(len(keymatrixlist)):
+            for w in range(len(matrix2[0])):
+                for k in range(len(matrix2)):
+                    result1[u][w] += keymatrixlist[u][k]*matrix2[k][w]
+            
+        result.append(result1)
+    return result
+        
+print(decode(numberlist))
