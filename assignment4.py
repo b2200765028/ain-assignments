@@ -65,31 +65,9 @@ except AssertionError:
     print("Key file is empty")
     exit()
 
-letterlist = []  
-y,a = 0,""
-while y < len(list_line): 
-    if y < len(list_line):
-        x = 0
-        a = ""
-        if y + key_matrix <= len(list_line):
-            while x < key_matrix:
-                a += (list_line[y+x])
-                x+=1
-            letterlist.append(a)
-        elif  list_line[y] != "":
-            while y+x<len(list_line):
-                a += list_line[y+x]
-                x +=1
-            while len(a) != key_matrix:
-                a += " "
-            
-            letterlist.append(a)
-
-        y+=key_matrix
-
 def encode_to_number(letterlist):
-    global matrixlist,count
-    matrixlist = []
+    global matrixlist,result,stra,keymatrixlist
+    matrixlist , result , stra = [] , [] , ""
     for i in range(len(letterlist)):
         z= []
         for j in range(len(letterlist[i])):
@@ -97,27 +75,64 @@ def encode_to_number(letterlist):
             number = letterscode.index(letter)
             z.append(number)
         matrixlist.append(z)
-    return matrixlist  
+    
+    matrix2 , result = [] , []
+    for i in range(len(matrixlist)):
+        a = []
+        for j in range(len(matrixlist[i])):
+            a.append([matrixlist[i][j]])
+        matrix2.append(a)
+    for i in range(len(matrix2)):
+        matrix3 = matrix2[i]
+        result1 = []
+        for j in range(len(matrix3)):
+            result1.append([0])
 
-encode_to_number(letterlist)
-print(matrixlist)
-print(keymatrixlist)
-matrix2 , result = [] , []
-for i in range(len(matrixlist)):
-    a = []
-    for j in range(len(matrixlist[i])):
-        a.append([matrixlist[i][j]])
-    matrix2.append(a)
-print(matrix2)
-for i in range(len(matrix2)):
-    matrix3 = matrix2[i]
-    result1 = []
-    for j in range(len(matrix3)):
-        result1.append([0])
-    for u in range(len(keymatrixlist)):
-        for w in range(len(matrix3[0])):
-            for k in range(len(matrix3)):
-                result1[u][w] += keymatrixlist[u][k]*matrix3[k][w]
+        for u in range(len(keymatrixlist)):
+            for w in range(len(matrix3[0])):
+                for k in range(len(matrix3)):
+                    result1[u][w] += keymatrixlist[u][k]*matrix3[k][w]
             
-    result.append(result1)
-print(result)
+        result.append(result1) 
+    for i in range(len(result)):
+        for j in range(len(result[i])):
+            stra += (' '.join(map(str, result[i][j])))
+            stra += ","
+        
+    stra = stra.rstrip(",")
+    return stra
+
+
+if sys.argv[1] == "enc":    
+    letterlist = []  
+    y,a = 0,""
+    while y < len(list_line): 
+        if y < len(list_line):
+            x = 0
+            a = ""
+            if y + key_matrix <= len(list_line):
+                while x < key_matrix:
+                    a += (list_line[y+x])
+                    x+=1
+                letterlist.append(a)
+            elif  list_line[y] != "":
+                while y+x<len(list_line):
+                    a += list_line[y+x]
+                    x +=1
+                while len(a) != key_matrix:
+                    a += " "
+            
+                letterlist.append(a)
+
+            y+=key_matrix
+    
+    print(encode_to_number(letterlist)) 
+    f = open(sys.argv[4],"w")
+    f.writelines(stra)
+
+
+
+
+elif sys.argv[1] == "dec": 
+    
+    pass
